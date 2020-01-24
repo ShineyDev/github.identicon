@@ -118,7 +118,7 @@ class Identicon():
 
         return array
 
-    def generate_matrix(self):
+    def generate_matrix(self) -> list:
         array = self.generate_array()
         return [array[i:i + 5] for i in range(0, 25, 5)]
 
