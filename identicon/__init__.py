@@ -37,8 +37,8 @@ class Identicon():
         # yes, i now know there is a builtin for this exact thing,
         # yes, i wasted far too much time building this impl for myself,
         # and yes, i am going to keep my impl here out of spite.
-        len_bytes = math.ceil(self.hash.bit_length() / 8)
-        self._bytes = [self.hash >> (len_bytes - 1) * 8 - 8 * i & 0xFF for (i) in range(0, len_bytes)]
+        len_bytes = math.ceil(hash.bit_length() / 8)
+        self._bytes = [(hash >> (((len_bytes - 1) * 8) - (8 * i))) & 0xFF for (i) in range(0, len_bytes)]
 
     @classmethod
     def from_identifier(cls, identifier: str):
@@ -97,8 +97,6 @@ class Identicon():
 
     def generate_array(self) -> list:
         def generate_bits():
-            byte = None
-
             for (i) in range(0, 16):
                 hi = self._bytes[i] & 0xF0
                 lo = self._bytes[i] & 0x0F
