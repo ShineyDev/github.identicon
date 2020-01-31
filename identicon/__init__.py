@@ -32,13 +32,7 @@ except (ImportError) as e:
 class Identicon():
     def __init__(self, hash: int):
         self.hash = hash
-
-        # int.to_bytes(4, "big")
-        # yes, i now know there is a builtin for this exact thing,
-        # yes, i wasted far too much time building this impl for myself,
-        # and yes, i am going to keep my impl here out of spite.
-        len_bytes = math.ceil(hash.bit_length() / 8)
-        self._bytes = [(hash >> (((len_bytes - 1) * 8) - (8 * i))) & 0xFF for (i) in range(0, len_bytes)]
+        self._bytes = list(hash.to_bytes(16, "big"))
 
     @classmethod
     def from_identifier(cls, identifier: str):
