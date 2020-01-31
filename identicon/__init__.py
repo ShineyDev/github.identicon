@@ -118,7 +118,7 @@ class Identicon():
 
     def generate_matrix(self) -> list:
         array = self.generate_array()
-        return [array[i:i + 5] for i in range(0, 25, 5)]
+        return [array[i:i + 5] for (i) in range(0, 25, 5)]
 
     def generate_image(self):
         if not has_pillow:
