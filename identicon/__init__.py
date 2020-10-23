@@ -17,80 +17,104 @@
 """
 
 import hashlib
-import math
 
+from identicon import utils
 
-has_pillow = False
 
 try:
     from PIL import Image, ImageDraw
     has_pillow = True
 except (ImportError) as e:
-    pass
+    has_pillow = False
 
 
 class Identicon():
-    def __init__(self, hash: int):
+    """
+    Represents a GitHub identicon.
+    """
+
+    def __init__(self, hash):
         self.hash = hash
         self._bytes = list(hash.to_bytes(16, "big"))
 
     @classmethod
-    def from_identifier(cls, identifier: str):
-        return cls(int(hashlib.md5(identifier.encode("utf-8")).hexdigest(), 16))
+    def from_identifier(cls, identifier):
+        """
+        Creates an identicon from a GitHub User ID.
 
-    def get_background(self) -> tuple:
+        Parameters
+        ----------
+        identifier: :class:`int`
+            A GitHub User ID.
+
+        Returns
+        -------
+        :class:`~identicon.Identicon`
+            An identicon.
+        """
+
+        return cls(int(hashlib.md5(str(identifier).encode("utf-8")).hexdigest(), 16))
+
+    def get_background(self):
+        """
+        Gets the background color used for all identicon.
+
+        This is, and always will be, RGB (240, 240, 240).
+
+        Returns
+        -------
+        Tuple[:class:`int`, :class:`int`, :class:`int`]
+            The background used for all identicon.
+        """
+
         return (240, 240, 240)
 
-    def get_foreground(self) -> tuple:
+    def get_foreground(self):
+        """
+        Calculates the foreground color to use for this identicon.
+
+        Returns
+        -------
+        Tuple[:class:`int`, :class:`int`, :class:`int`]
+            The background to use for this identicon.
+        """
+
         h = ((self._bytes[12] & 0x0F) << 8) | self._bytes[13]
         s = self._bytes[14]
         l = self._bytes[15]
 
-        def map(value, start1, stop1, start2, stop2):
-            # https://processing.org/reference/map_.html
-            return (value - start1) * (stop2 - start2) / (stop1 - start1) + start2
+        h = utils.map(h, 0, 4095, 0, 360)
+        s = 65 - utils.map(s, 0, 255, 0, 20)
+        l = 75 - utils.map(l, 0, 255, 0, 20)
 
-        h = map(h, 0, 4095, 0, 360)
-        s = 65 - map(s, 0, 255, 0, 20)
-        l = 75 - map(l, 0, 255, 0, 20)
+        return utils.hsl_to_rgb(h, s, l)
 
-        def hsl_to_rgb(h, s, l):
-            h /= 360
-            s /= 100
-            l /= 100
+    def generate_bits(self):
+        """
+        Generates 32 bits for the identicon tiles, the latter 17 are
+        "spare".
 
-            if l <= 0.5:
-                b = l * (s + 1)
-            else:
-                b = l + s - l * s
+        The bits are later formatted as follows:
 
-            a = l * 2 - b
+        .. code-block::
 
-            def hue_to_rgb(a, b, h):
-                if h < 0:
-                    h += 1
-                elif h > 1:
-                    h -= 1
+            11   6    1    6    11
 
-                if h < 1 / 6:
-                    return a + (b - a) * 6 * h
-                elif h < 1 / 2:
-                    return b
-                elif h < 2 / 3:
-                    return a + (b - a) * (2 / 3 - h) * 6
-                else:
-                    return a
+            12   7    2    7    12
 
-            r = int(round(hue_to_rgb(a, b, h + 1 / 3) * 255, 0))
-            g = int(round(hue_to_rgb(a, b, h) * 255, 0))
-            b = int(round(hue_to_rgb(a, b, h - 1 / 3) * 255, 0))
+            13   8    3    8    13
 
-            return (r, g, b)
+            14   9    4    9    14
 
-        return hsl_to_rgb(h, s, l)
+            15   10   5    10   15
 
-    def generate_array(self) -> list:
-        def generate_bits():
+        Returns
+        -------
+        Iterator[:class:`bool`]
+            An iterator of bits.
+        """
+
+        def _generate():
             for (i) in range(0, 16):
                 hi = self._bytes[i] & 0xF0
                 lo = self._bytes[i] & 0x0F
@@ -98,8 +122,34 @@ class Identicon():
                 yield hi >> 4
                 yield lo
 
+        return map(lambda x: x % 2 == 0, _generate())
+
+    def generate_list(self):
+        """
+        Generates 25 bits for the identicon tiles.
+
+        The bits are later formatted as follows:
+
+        .. code-block::
+
+            1    2    3    4    5
+
+            6    7    8    9    10
+
+            11   12   13   14   15
+
+            16   17   18   19   20
+
+            21   22   23   24   25
+
+        Returns
+        -------
+        List[:class:`bool`]
+            A list of bits.
+        """
+
         array = [False] * 25
-        bits = map(lambda b: b % 2 == 0, generate_bits())
+        bits = self.generate_bits()
 
         for (column) in range(2, -1, -1):
             for (row) in range(0, 5):
@@ -110,13 +160,29 @@ class Identicon():
 
         return array
 
-    def generate_matrix(self) -> list:
-        array = self.generate_array()
-        return [array[i:i + 5] for (i) in range(0, 25, 5)]
+    def generate_matrix(self):
+        """
+        Transforms the return value from :meth:`.generate_list` into a
+        5*5 matrix.
+
+        Returns
+        -------
+        List[List[:class:`bool`]]
+            A matrix of bits.
+        """
+
+        list_ = self.generate_list()
+        return [list_[i:i + 5] for i in range(0, 25, 5)]
 
     def generate_image(self):
+        """
+        Generates a PNG image of the identicon.
+
+        This requires `Pillow <https://pypi.org/project/pillow/>`_.
+        """
+
         if not has_pillow:
-            raise Exception("requires [pillow](https://pypi.org/project/pillow/)")
+            raise RuntimeError("requires [pillow](https://pypi.org/project/pillow/)")
 
         background = self.get_background()
         foreground = self.get_foreground()
