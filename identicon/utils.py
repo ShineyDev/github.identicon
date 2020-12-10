@@ -22,7 +22,7 @@ def hsl_to_rgb(h, s, l):
     s /= 100
     l /= 100
 
-    if l <= .5:
+    if l <= 1 / 2:
         b = l * (s + 1)
     else:
         b = (l + s) - (l * s)
