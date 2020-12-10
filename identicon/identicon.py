@@ -23,12 +23,13 @@ from identicon import utils
 
 try:
     from PIL import Image, ImageDraw
+
     has_pillow = True
 except (ImportError) as e:
     has_pillow = False
 
 
-class Identicon():
+class Identicon:
     """
     Represents a GitHub identicon.
     """
@@ -115,7 +116,7 @@ class Identicon():
         """
 
         def _generate():
-            for (i) in range(0, 16):
+            for i in range(0, 16):
                 hi = self._bytes[i] & 0xF0
                 lo = self._bytes[i] & 0x0F
 
@@ -151,8 +152,8 @@ class Identicon():
         array = [False] * 25
         bits = self.generate_bits()
 
-        for (column) in range(2, -1, -1):
-            for (row) in range(0, 5):
+        for column in range(2, -1, -1):
+            for row in range(0, 5):
                 bit = next(bits)
 
                 array[column + (row * 5)] = bit
@@ -172,7 +173,7 @@ class Identicon():
         """
 
         list_ = self.generate_list()
-        return [list_[i:i + 5] for i in range(0, 25, 5)]
+        return [list_[i : i + 5] for i in range(0, 25, 5)]
 
     def generate_image(self):
         """

@@ -35,6 +35,7 @@ def hsl_to_rgb(h, s, l):
 
     return (r, g, b)
 
+
 def hue_to_value(a, b, h):
     if h < 0:
         h += 1
@@ -49,6 +50,7 @@ def hue_to_value(a, b, h):
         return a + ((b - a) * ((2 / 3) - h) * 6)
     else:
         return a
+
 
 def map(value, start1, stop1, start2, stop2):
     # https://processing.org/reference/map_.html
