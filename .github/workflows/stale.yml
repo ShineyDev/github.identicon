@@ -25,16 +25,16 @@ jobs:
         stale-issue-message: |-
           This issue has been marked as stale due to its inactivity and will be closed in 14 days.
 
-          If you believe the issue should be kept open, remove the `A:stale` label or add a comment.
-          If you believe the issue will remain inactive, but should stay open, add the `A:backlog` label.
+          If you believe the issue should remain open, remove the `A:stale` label or add a comment.
+          If you believe the issue will continue to be inactive but should remain open, add the `A:backlog` label.
 
         exempt-pr-labels: A:backlog
         stale-pr-label: A:stale
         stale-pr-message: |-
           This pull request has been marked as stale due to its inactivity and will be closed in 14 days.
 
-          If you believe the pull request should be kept open, remove the `A:stale` label or add a comment.
-          If you believe the pull request will remain inactive, but should stay open, add the `A:backlog` label.
+          If you believe the pull request should remain open, remove the `A:stale` label or add a comment.
+          If you believe the pull request will continue to be inactive but should remain open, add the `A:backlog` label.
 
   unstale:
     if: github.event_name == 'issue_comment' && contains(github.event.issue.labels.*.name, 'A:stale') && github.event.issue.user.type != 'Bot'
@@ -52,5 +52,5 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            name: A:stale
+            name: 'A:stale'
           })
