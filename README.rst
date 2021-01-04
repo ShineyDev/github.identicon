@@ -33,8 +33,6 @@
 Installation
 ------------
 
-**Python 3.6 or higher is required.**
-
 .. code-block:: sh
 
     python3 -m pip install --upgrade git+https://github.com/ShineyDev/github-identicon.git
