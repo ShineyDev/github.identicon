@@ -1,0 +1,4 @@
+include LICENSE
+include identicon/py.typed
+include requirements.txt
+recursive-include identicon *.pyi
