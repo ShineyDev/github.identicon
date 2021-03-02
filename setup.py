@@ -2,30 +2,19 @@ import re
 import setuptools
 
 
-with open("README.rst", "r") as file_stream:
-    readme = file_stream.read()
-
 with open("identicon/__init__.py", "r") as file_stream:
-    version = re.search(
-        r"^version = [\"]([^\"]*)[\"]", file_stream.read(), re.MULTILINE
-    ).group(1)
+    version = re.search(r"^version = [\"]([^\"]*)[\"]", file_stream.read(), re.MULTILINE).group(1)
 
 if version.endswith(("a", "b", "rc")):
     try:
         import subprocess
 
-        process = subprocess.Popen(
-            ["git", "rev-list", "--count", "HEAD"], stdout=subprocess.PIPE
-        )
-
+        process = subprocess.Popen(["git", "rev-list", "--count", "HEAD"], stdout=subprocess.PIPE)
         out, _ = process.communicate()
         if out:
             version += out.decode("utf-8").strip()
 
-        process = subprocess.Popen(
-            ["git", "rev-parse", "--short", "HEAD"], stdout=subprocess.PIPE
-        )
-
+        process = subprocess.Popen(["git", "rev-parse", "--short", "HEAD"], stdout=subprocess.PIPE)
         out, _ = process.communicate()
         if out:
             version += "+g" + out.decode("utf-8").strip()
@@ -52,8 +41,8 @@ classifiers = [
 ]
 
 project_urls = {
-    "Issue Tracker": "https://github.com/ShineyDev/github-identicon/issues/",
-    "Source": "https://github.com/ShineyDev/github-identicon/",
+    "Issue Tracker": "https://github.com/ShineyDev/github-identicon/issues",
+    "Source": "https://github.com/ShineyDev/github-identicon",
 }
 
 setuptools.setup(
@@ -61,8 +50,6 @@ setuptools.setup(
     classifiers=classifiers,
     description="A port of GitHub's identicon algorithm to Python.",
     license="Apache Software License",
-    long_description=readme,
-    long_description_content_type="text/x-rst",
     name="github-identicon",
     packages=["identicon"],
     project_urls=project_urls,
