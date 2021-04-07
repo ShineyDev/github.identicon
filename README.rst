@@ -28,6 +28,7 @@
 
     <h1 align="center">github-identicon</h1>
     <p align="center">A port of GitHub's identicon algorithm to Python.</p>
+    <h6 align="center">Copyright 2020-present ShineyDev</h6>
 
 
 Installation
