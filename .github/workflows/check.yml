@@ -28,4 +28,4 @@ jobs:
         python -m pip install --upgrade .
 
     - name: Run MyPy
-      run: mypy -v github.identicon
+      run: mypy -v github/identicon
