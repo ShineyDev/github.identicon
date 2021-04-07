@@ -2,10 +2,45 @@ import re
 import setuptools
 
 
-with open("identicon/__init__.py", "r") as file_stream:
-    version = re.search(r"^version = [\"]([^\"]*)[\"]", file_stream.read(), re.MULTILINE).group(1)
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
 
-if version.endswith(("a", "b", "rc")):
+packages = [
+    "identicon",
+]
+
+project_urls = {
+    "Issue Tracker": "https://github.com/ShineyDev/github-identicon/issues",
+    "Source": "https://github.com/ShineyDev/github-identicon",
+}
+
+_version_regex = r"^version = ('|\")((?:[0-9]+\.)*[0-9]+(?:\.?([a-z]+)(?:\.?[0-9])?)?)\1$"
+
+with open("identicon/__init__.py") as stream:
+    match = re.search(_version_regex, stream.read(), re.MULTILINE)
+
+version = match.group(2)
+
+if match.group(3) is not None:
     try:
         import subprocess
 
@@ -21,29 +56,6 @@ if version.endswith(("a", "b", "rc")):
     except (Exception) as e:
         pass
 
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Topic :: Software Development",
-    "Topic :: Software Development :: Libraries",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Typing :: Typed",
-]
-
-project_urls = {
-    "Issue Tracker": "https://github.com/ShineyDev/github-identicon/issues",
-    "Source": "https://github.com/ShineyDev/github-identicon",
-}
 
 setuptools.setup(
     author="ShineyDev",
@@ -51,7 +63,7 @@ setuptools.setup(
     description="A port of GitHub's identicon algorithm to Python.",
     license="Apache Software License",
     name="github-identicon",
-    packages=["identicon"],
+    packages=packages,
     project_urls=project_urls,
     python_requires=">=3.6.0",
     url="https://github.com/ShineyDev/github-identicon",
