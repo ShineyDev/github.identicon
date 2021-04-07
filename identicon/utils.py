@@ -36,3 +36,10 @@ def hue_to_value(a, b, h):
 def map(value, start1, stop1, start2, stop2):
     # https://processing.org/reference/map_.html
     return (value - start1) * (stop2 - start2) / (stop1 - start1) + start2
+
+
+__all__ = [
+    "hsl_to_rgb",
+    "hue_to_value",
+    "map",
+]

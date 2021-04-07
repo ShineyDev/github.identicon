@@ -184,3 +184,8 @@ class Identicon:
                     draw.rectangle((x, y, x + 70, y + 70), foreground)
 
         return image
+
+
+__all__ = [
+    "Identicon",
+]
