@@ -43,7 +43,7 @@ Usage
 
 .. code-block:: python3
 
-	import identicon
-	cls = identicon.Identicon.from_identifier(480938)
-	image = cls.generate_image()  # requires PIL
-	image.show()
+    import identicon
+    cls = identicon.Identicon.from_identifier(480938)
+    image = cls.generate_image()  # requires PIL
+    image.show()
