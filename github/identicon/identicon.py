@@ -5,10 +5,10 @@ from github.identicon import utils
 
 try:
     from PIL import Image, ImageDraw
-
-    has_pillow = True
 except (ImportError) as e:
     has_pillow = False
+else:
+    has_pillow = True
 
 
 class Identicon:
@@ -17,49 +17,42 @@ class Identicon:
     """
 
     def __init__(self, hash):
-        self.hash = hash
         self._bytes = list(hash.to_bytes(16, "big"))
 
     @classmethod
     def from_identifier(cls, identifier):
         """
-        Creates an identicon from a GitHub User ID.
+        Creates an identicon from a GitHub user ID.
 
         Parameters
         ----------
         identifier: :class:`int`
-            A GitHub User ID.
-
-        Returns
-        -------
-        :class:`~identicon.Identicon`
-            An identicon.
+            A GitHub user ID.
         """
 
         return cls(int(hashlib.md5(str(identifier).encode("utf-8")).hexdigest(), 16))
 
     def get_background(self):
         """
-        Gets the background color used for all identicon.
-
-        This is, and always will be, RGB (240, 240, 240).
+        Gets the identicon's background color. This is always
+        ``(240, 240, 240)``.
 
         Returns
         -------
         Tuple[:class:`int`, :class:`int`, :class:`int`]
-            The background used for all identicon.
+            The identicon's background color.
         """
 
         return (240, 240, 240)
 
     def get_foreground(self):
         """
-        Calculates the foreground color to use for this identicon.
+        Calculates the identicon's foreground color.
 
         Returns
         -------
         Tuple[:class:`int`, :class:`int`, :class:`int`]
-            The background to use for this identicon.
+            The identicon's foreground color.
         """
 
         h = ((self._bytes[12] & 0x0F) << 8) | self._bytes[13]
@@ -74,10 +67,10 @@ class Identicon:
 
     def generate_bits(self):
         """
-        Generates 32 bits for the identicon tiles, the latter 17 are
-        "spare".
+        Generates 32 bits for the identicon tiles, the latter 17 of
+        which are spare.
 
-        The bits are later formatted as follows:
+        These bits are later formatted as follows:
 
         .. code-block::
 
@@ -111,7 +104,7 @@ class Identicon:
         """
         Generates 25 bits for the identicon tiles.
 
-        The bits are later formatted as follows:
+        These bits are later formatted as follows:
 
         .. code-block::
 
@@ -161,11 +154,11 @@ class Identicon:
         """
         Generates a PNG image of the identicon.
 
-        This requires `Pillow <https://pypi.org/project/pillow/>`_.
+        This requires `pillow <https://pypi.org/project/pillow/>`_.
         """
 
         if not has_pillow:
-            raise RuntimeError("requires [pillow](https://pypi.org/project/pillow/)")
+            raise RuntimeError("requires https://pypi.org/project/pillow/")
 
         background = self.get_background()
         foreground = self.get_foreground()
