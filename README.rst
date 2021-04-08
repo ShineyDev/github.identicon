@@ -16,6 +16,11 @@
                  src="https://github.com/ShineyDev/github.identicon/workflows/Check/badge.svg?event=push" />
         </a>
 
+        <a href="https://github.com/ShineyDev/github.identicon/actions?query=workflow%3ADeploy+event%3Apush">
+            <img alt="Deploy Status"
+                 src="https://github.com/ShineyDev/github.identicon/workflows/Deploy/badge.svg?event=push" />
+        </a>
+
         <a href="https://github.com/ShineyDev/github.identicon/actions?query=workflow%3ALint+event%3Apush">
             <img alt="Lint Status"
                  src="https://github.com/ShineyDev/github.identicon/workflows/Lint/badge.svg?event=push" />

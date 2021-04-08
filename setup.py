@@ -17,6 +17,8 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Documentation",
+    "Topic :: Documentation :: Sphinx",
     "Topic :: Multimedia :: Graphics",
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries",
@@ -24,11 +26,20 @@ classifiers = [
     "Typing :: Typed",
 ]
 
+extras_require = {
+    "docs": [
+        "sphinx",
+        "sphinxcontrib_trio",
+        "sphinx-rtd-theme",
+    ],
+}
+
 packages = [
     "github.identicon",
 ]
 
 project_urls = {
+    "Documentation": "https://github-identicon.readthedocs.io",
     "Issue Tracker": "https://github.com/ShineyDev/github.identicon/issues",
     "Source": "https://github.com/ShineyDev/github.identicon",
 }
@@ -61,6 +72,7 @@ setuptools.setup(
     author="ShineyDev",
     classifiers=classifiers,
     description="A port of GitHub's identicon algorithm to Python.",
+    extras_require=extras_require,
     license="Apache Software License",
     name="github.identicon",
     packages=packages,
