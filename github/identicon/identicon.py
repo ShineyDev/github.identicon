@@ -1,6 +1,6 @@
 import hashlib
 
-from identicon import utils
+from github.identicon import utils
 
 
 try:
