@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-from github.identicon.identicon import Identicon as Identicon
+from identicon.identicon import Identicon as Identicon
 
 
 class _VersionInfo(NamedTuple):
