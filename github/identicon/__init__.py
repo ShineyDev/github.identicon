@@ -1,6 +1,6 @@
 import collections
 
-from identicon.identicon import Identicon
+from github.identicon.identicon import Identicon
 
 
 __all__ = [
